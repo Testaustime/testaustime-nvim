@@ -1,0 +1,19 @@
+cabal-version:      2.4
+name:               testaustime-nvim
+version:            0.1.0.0
+synopsis:           Testaustime-client for NeoVim
+description:        This is the official NeoVim client for testaustime written in Haskell
+bug-reports:        https://github.com/Testausserveri/testaustime-nvim
+author:             Luukas Pörtfors
+maintainer:         lajp@iki.fi
+license:            MIT
+license-file:       LICENSE
+build-type:         Simple
+extra-source-files: README.md
+
+executable testaustime-nvim
+    main-is:          Main.hs
+    other-modules:    Plugin, Testaustime
+    build-depends:    base ^>=4.15.1.0, nvim-hs ^>=2.2.0.1, unliftio, bytestring, time, aeson, http-client, http-client-tls, http-types
+    hs-source-dirs:   testaustime-nvim
+    default-language: Haskell2010
