@@ -5,6 +5,7 @@ module Testaustime (testaustimeHeartBeat, initTestaustimeEnv) where
 
 import GHC.Generics
 import Neovim
+import Neovim.Exceptions
 import Neovim.API.String
 import UnliftIO.STM  (TVar, atomically, writeTVar, newTVarIO, readTVarIO)
 import Control.Monad (when)
@@ -36,6 +37,10 @@ toMaybe :: String -> Maybe String
 toMaybe "" = Nothing
 toMaybe x = Just x
 
+fromJustNoFail :: Maybe String -> String
+fromJustNoFail (Just x) = x
+fromJustNoFail Nothing  = ""
+
 secsSinceEpoch :: UTCTime -> Int
 secsSinceEpoch = floor . nominalDiffTimeToSeconds . utcTimeToPOSIXSeconds
 
@@ -49,9 +54,11 @@ testaustimeHeartBeat = do
         atomically $ writeTVar lastUpdatedTVar curTimeSec
         hb <- getHeartBeatData
         url <- getUrl
+        ignore <- words <$> getIgnoredFiletypes
         token <- getAuthorizationToken
-        response <- liftIO $ sendHeartBeat hb url token
-        return ()
+        when (fromJustNoFail (language hb) `notElem` ignore) $ do
+            liftIO $ sendHeartBeat hb url token
+            return ()
 
 getHeartBeatData :: Neovim env HeartBeat
 getHeartBeatData = do
@@ -61,10 +68,26 @@ getHeartBeatData = do
         lang <- toString <$> buffer_get_option bf "filetype"
         pName <- reverse . takeWhile (/='/') . reverse . toString <$> nvim_call_function "getcwd" []
         hName <- toString <$> nvim_call_function "hostname" []
-        let eName = "NeoVim" -- FIXME: Maybe not hard-coded?
+        eName <- getEditorName
         return (HeartBeat (toMaybe pName) (toMaybe lang) (toMaybe eName) (toMaybe hName))
 
     else return (HeartBeat Nothing Nothing Nothing Nothing)
+
+getIgnoredFiletypes :: Neovim env String
+getIgnoredFiletypes = getVarIfExists "testaustime_ignore"
+
+getEditorName :: Neovim env String
+getEditorName = do
+    x <- getVarIfExists "testaustime_editor_name"
+    if x == "" then
+        return "Neovim"
+    else return x
+
+getVarIfExists :: String -> Neovim env String
+getVarIfExists x = toString <$> catchNeovimException (nvim_get_var x) handler
+    where
+        handler :: NeovimException -> Neovim env Object
+        handler ex = return (docToObject "")
 
 getAuthorizationToken :: Neovim env String
 getAuthorizationToken = toString <$> nvim_get_var "testaustime_token"

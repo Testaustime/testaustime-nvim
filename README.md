@@ -15,5 +15,10 @@ The official NeoVim client for Testaustime written in Haskell using nvim-hs
     let g:testaustime_url = "https://your.testaustimeinstance.com/activity/update"
     let g:testaustime_token = "YourVerySecretTestaustimeAuthenticationToken"
     ```
+4. Additionally you can configure these values:
+    ```vim
+    let g:testaustime_ignore = "packer netrw" " A space-separated list of filetypes that are ignored
+    let g:testaustime_editor_name = "NeoVim" " The value of the editor_name field sent in the heartbeat
+    ```
 
 After these steps you should be good to go
