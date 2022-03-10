@@ -87,7 +87,7 @@ getEditorName :: Neovim env String
 getEditorName = do
     x <- getVarIfExists "testaustime_editor_name"
     if x == "" then
-        return "Neovim"
+        return "NeoVim"
     else return x
 
 getVarIfExists :: String -> Neovim env String
