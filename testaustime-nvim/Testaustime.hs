@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module Testaustime (testaustimeHeartBeat, initTestaustimeEnv) where
+module Testaustime (testaustimeHeartBeat, initTestaustimeEnv, testaustimeFlush) where
 
 import GHC.Generics
 import Neovim
@@ -60,6 +60,13 @@ testaustimeHeartBeat = do
             liftIO $ sendHeartBeat hb url token
             return ()
 
+testaustimeFlush :: Neovim env ()
+testaustimeFlush = do
+    url <- getUrl
+    token <- getAuthorizationToken
+    liftIO $ sendFlush url token
+    return ()
+
 getHeartBeatData :: Neovim env HeartBeat
 getHeartBeatData = do
     bf <- nvim_get_current_buf
@@ -98,7 +105,7 @@ getUrl = toString <$> nvim_get_var "testaustime_url"
 sendHeartBeat :: HeartBeat -> String -> String -> IO (Response L8.ByteString)
 sendHeartBeat hb url token = do
     manager <- newManager tlsManagerSettings
-    initRequest <- parseRequest url
+    initRequest <- parseRequest (url ++ "/activity/update")
     let request = initRequest {
         method = "POST",
         requestBody = RequestBodyLBS $ encode hb,
@@ -107,5 +114,12 @@ sendHeartBeat hb url token = do
             ("Authorization", pack ("Bearer " ++ token))
             ]
         }
+
+    httpLbs request manager
+
+sendFlush :: String -> String -> IO (Response L8.ByteString)
+sendFlush url token = do
+    manager <- newManager tlsManagerSettings
+    request <- applyBearerAuth (pack token) <$> parseRequest ("POST " ++ url ++ "/activity/flush")
 
     httpLbs request manager

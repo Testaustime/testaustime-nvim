@@ -12,7 +12,7 @@ The official NeoVim client for Testaustime written in Haskell using nvim-hs
     ```
 3. Add the following lines to your NeoVim config:
     ```vim
-    let g:testaustime_url = "https://your.testaustimeinstance.com/activity/update"
+    let g:testaustime_url = "https://your.testaustimeinstance.com"
     let g:testaustime_token = "YourVerySecretTestaustimeAuthenticationToken"
     ```
 4. Additionally you can configure these values:
