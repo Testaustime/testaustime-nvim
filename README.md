@@ -17,7 +17,7 @@ The official NeoVim client for Testaustime written in Haskell using nvim-hs
     ```
 4. Additionally you can configure these values:
     ```vim
-    let g:testaustime_ignore = "packer netrw" " A space-separated list of filetypes that are ignored
+    let g:testaustime_ignore = "packer netrw help qf TelescopePrompt" " A space-separated list of filetypes that are ignored
     let g:testaustime_editor_name = "NeoVim" " The value of the editor_name field sent in the heartbeat
     ```
 
