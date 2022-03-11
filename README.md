@@ -11,6 +11,7 @@ The official NeoVim client for Testaustime written in Haskell using nvim-hs
     ```
     If you're having some issues (arch users) make sure you have cabal configured for dynamic builds.
     More information [here](https://wiki.archlinux.org/title/Haskell#Configuring_Cabal_for_dynamic_linking)
+    If installation fails, try running `cabal update` first
 2. Add the following lines to your NeoVim config:
     ```vim
     let g:testaustime_url = "https://your.testaustimeinstance.com"
