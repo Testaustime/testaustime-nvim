@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               testaustime-nvim
-version:            0.1.0.0
+version:            0.1.0.1
 synopsis:           Testaustime-client for NeoVim
 description:        This is the official NeoVim client for testaustime written in Haskell
 bug-reports:        https://github.com/lajp/testaustime-nvim
