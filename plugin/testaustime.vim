@@ -16,4 +16,8 @@ function! testaustime#start()
     call remote#host#Register('testaustime-nvim', '*',  jobstart(['testaustime-nvim'], {'rpc': v:true, }))
     return remote#host#Require('testaustime-nvim')
 endfunction
-call testaustime#start() " Autostart
+
+try
+    call testaustime#start() " Autostart
+catch
+endtry

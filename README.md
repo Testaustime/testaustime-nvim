@@ -8,7 +8,7 @@ The official NeoVim client for Testaustime written in Haskell using nvim-hs
 2. Install the vim plugin:
     You can use your famourite plugin manager. The example uses packer.nvim
     ```vim
-    use 'lajp/testaustime-nvim'
+    use {'lajp/testaustime-nvim', run = 'cabal install --overwrite-policy=always' }
     ```
 3. Add the following lines to your NeoVim config:
     ```vim
