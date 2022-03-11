@@ -17,7 +17,4 @@ function! testaustime#start()
     return remote#host#Require('testaustime-nvim')
 endfunction
 
-try
-    call testaustime#start() " Autostart
-catch
-endtry
+silent! call testaustime#start() " Autostart
