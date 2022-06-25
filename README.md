@@ -1,5 +1,7 @@
 # testaustime-nvim
 
+This beautiful piece of art is now archived in favor of [a more functional version of a testaustime plugin for nvim](https://github.com/Testaustime/testaustime.nvim)
+
 The official NeoVim client for Testaustime written in Haskell using nvim-hs
 
 ## Installation
